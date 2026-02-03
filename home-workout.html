@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Home Workout - Musculation à domicile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E85A2A;
+            --secondary: #2D3436;
+            --accent: #00D4AA;
+            --background: #0D1117;
+            --surface: #161B22;
+            --surface-light: #21262D;
+            --text: #F0F6FC;
+            --text-muted: #8B949E;
+            --success: #3FB950;
+            --warning: #D29922;
+            --danger: #F85149;
+            --gradient-1: linear-gradient(135deg, #FF6B35 0%, #FF8F5A 100%);
+            --gradient-2: linear-gradient(135deg, #00D4AA 0%, #00F5C4 100%);
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--background);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .screen {
+            display: none;
+            padding: 24px;
+            padding-bottom: 120px;
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .screen.flex-active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 40px 0;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--surface-light);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 64px;
+            line-height: 0.9;
+            letter-spacing: 2px;
+        }
+
+        .gradient-text {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-text-alt {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            color: var(--text-muted);
+            margin-top: 16px;
+            font-size: 16px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 20px 12px;
+            text-align: center;
+            border: 1px solid var(--surface-light);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 107, 53, 0.15);
+        }
+
+        .stat-icon { font-size: 24px; margin-bottom: 8px; }
+        .stat-value { font-size: 24px; font-weight: 700; color: var(--text); }
+        .stat-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+        .today-preview {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--surface-light);
+        }
+
+        .section-title {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .exercise-preview-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .exercise-preview-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            background: var(--surface-light);
+            border-radius: 12px;
+            transition: transform 0.2s;
+        }
+
+        .exercise-preview-item:hover { transform: translateX(4px); }
+
+        .exercise-preview-icon {
+            font-size: 28px;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--background);
+            border-radius: 12px;
+        }
+
+        .exercise-preview-info { flex: 1; }
+        .exercise-preview-name { font-weight: 600; font-size: 14px; }
+        .exercise-preview-reps { color: var(--primary); font-size: 13px; font-weight: 500; }
+
+        .motivation-banner {
+            background: var(--gradient-1);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 16px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 24px;
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .action-buttons { display: flex; flex-direction: column; gap: 12px; }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-primary:active { transform: translateY(0); }
+        .btn-primary.btn-large { padding: 20px 32px; font-size: 18px; }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--surface-light);
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-secondary:hover { background: var(--surface-light); }
+        .btn-icon { font-size: 18px; }
+
+        .phase-screen {
+            min-height: 100vh;
+            display: none;
+            flex-direction: column;
+            padding: 24px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .phase-screen.flex-active { display: flex; }
+
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .phase-badge {
+            background: var(--surface-light);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .phase-progress { color: var(--text-muted); font-size: 14px; }
+
+        .btn-back, .btn-tip {
+            background: var(--surface);
+            border: none;
+            color: var(--text);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .phase-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .phase-icon-large, .exercise-icon-large {
+            font-size: 80px;
+            margin-bottom: 24px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .phase-exercise-name, .exercise-name-large {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            letter-spacing: 1px;
+            margin-bottom: 32px;
+        }
+
+        .timer-display { margin-bottom: 32px; }
+
+        .timer-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 4px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 40px rgba(255, 107, 53, 0.3);
+        }
+
+        .timer-circle.stretch {
+            border-color: var(--accent);
+            box-shadow: 0 0 40px rgba(0, 212, 170, 0.3);
+        }
+
+        .timer-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 48px;
+            color: var(--text);
+        }
+
+        .phase-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+        .btn-next {
+            background: var(--surface-light);
+            color: var(--text);
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .skip-phase { margin-top: auto; padding-top: 24px; text-align: center; }
+
+        .btn-text {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: underline;
+            font-family: inherit;
+        }
+
+        .tip-panel {
+            background: var(--surface);
+            border: 1px solid var(--warning);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+            animation: slideDown 0.3s ease;
+            display: none;
+        }
+
+        .tip-panel.visible { display: block; }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tip-panel h4 { color: var(--warning); margin-bottom: 8px; font-size: 14px; }
+        .tip-panel p { color: var(--text-muted); font-size: 13px; line-height: 1.5; }
+
+        .reps-display { margin-bottom: 32px; }
+        .reps-value { font-family: 'Bebas Neue', sans-serif; font-size: 96px; color: var(--primary); line-height: 1; }
+        .reps-unit { display: block; color: var(--text-muted); font-size: 14px; text-transform: uppercase; letter-spacing: 2px; }
+
+        .series-grid { display: flex; gap: 12px; margin-bottom: 24px; }
+
+        .series-btn {
+            flex: 1;
+            background: var(--surface);
+            border: 2px solid var(--surface-light);
+            border-radius: 16px;
+            padding: 20px 12px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .series-btn:not(.completed):not(:disabled):hover {
+            border-color: var(--primary);
+            background: var(--surface-light);
+        }
+
+        .series-btn.completed {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+            cursor: default;
+        }
+
+        .series-number { font-size: 12px; opacity: 0.7; }
+        .series-reps { font-weight: 600; }
+
+        .rest-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(13, 17, 23, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            animation: fadeIn 0.3s;
+        }
+
+        .rest-overlay.visible { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .rest-content { text-align: center; }
+        .rest-content h3 { font-size: 24px; margin-bottom: 16px; }
+        .rest-timer { font-family: 'Bebas Neue', sans-serif; font-size: 120px; color: var(--primary); line-height: 1; }
+
+        .btn-skip-rest {
+            background: var(--surface);
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin-top: 24px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .motivation-mini { color: var(--accent); font-size: 14px; font-weight: 500; margin-top: 16px; animation: pulse 3s infinite; }
+
+        .workout-footer { margin-top: auto; padding-top: 24px; }
+
+        .difficulty-adjust {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .btn-adjust {
+            background: var(--surface);
+            border: 1px solid var(--surface-light);
+            color: var(--text);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .complete-phase {
+            background: linear-gradient(180deg, var(--background) 0%, #1a2332 100%);
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            font-size: 60px;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: confettiDrop 0.5s ease;
+        }
+
+        @keyframes confettiDrop {
+            from { transform: translateX(-50%) translateY(-100px) scale(0); }
+            to { transform: translateX(-50%) translateY(0) scale(1); }
+        }
+
+        .complete-content { z-index: 1; }
+        .trophy { font-size: 100px; margin-bottom: 24px; animation: bounce 1s infinite; }
+
+        .complete-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 64px;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .complete-subtitle { color: var(--text-muted); margin-bottom: 32px; }
+        .complete-stats { display: flex; justify-content: center; gap: 32px; margin-bottom: 32px; }
+        .complete-stat { display: flex; flex-direction: column; align-items: center; }
+        .complete-stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: var(--text); }
+        .complete-stat-label { color: var(--text-muted); font-size: 13px; }
+        .motivation-banner.complete { background: var(--gradient-2); margin-bottom: 32px; }
+
+        .screen-header { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
+        .screen-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; }
+
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+        .empty-icon { font-size: 60px; margin-bottom: 16px; opacity: 0.5; }
+        .empty-subtitle { font-size: 14px; margin-top: 8px; }
+
+        .history-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .history-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--surface-light);
+        }
+
+        .history-date { font-weight: 600; text-transform: capitalize; margin-bottom: 8px; }
+        .history-details { display: flex; justify-content: space-between; color: var(--text-muted); font-size: 13px; margin-bottom: 12px; }
+        .history-exercises { display: flex; flex-wrap: wrap; gap: 8px; }
+        .history-exercise-tag { background: var(--surface-light); padding: 6px 10px; border-radius: 8px; font-size: 12px; }
+
+        .settings-section {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid var(--surface-light);
+        }
+
+        .settings-section h2 {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .level-buttons { display: flex; flex-direction: column; gap: 12px; }
+
+        .level-btn {
+            background: var(--surface-light);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: left;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-family: inherit;
+        }
+
+        .level-btn.active { border-color: var(--primary); background: rgba(255, 107, 53, 0.1); }
+        .level-desc { font-size: 12px; color: var(--text-muted); }
+
+        .progress-info { display: flex; flex-direction: column; gap: 12px; }
+        .progress-item { display: flex; justify-content: space-between; align-items: center; }
+        .progress-adjust { display: flex; align-items: center; gap: 16px; }
+
+        .progress-adjust button {
+            background: var(--surface-light);
+            border: none;
+            color: var(--text);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .progress-adjust span { font-size: 20px; font-weight: 600; min-width: 30px; text-align: center; }
+
+        .settings-section.danger { border-color: var(--danger); background: rgba(248, 81, 73, 0.05); }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 400px) {
+            .hero-title { font-size: 48px; }
+            .stats-grid { gap: 8px; }
+            .stat-card { padding: 16px 8px; }
+            .reps-value { font-size: 72px; }
+            .rest-timer { font-size: 80px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="home-screen" class="screen active">
+        <div class="hero-section">
+            <div class="hero-badge">JOUR <span id="current-day">1</span> • SEMAINE <span id="current-week">1</span></div>
+            <h1 class="hero-title">
+                <span class="gradient-text">HOME</span><br>
+                <span class="gradient-text-alt">WORKOUT</span>
+            </h1>
+            <p class="hero-subtitle" id="hero-subtitle">4 exercices aujourd'hui</p>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon">🔥</div><div class="stat-value" id="stat-streak">0</div><div class="stat-label">Jours consécutifs</div></div>
+            <div class="stat-card"><div class="stat-icon">🏋️</div><div class="stat-value" id="stat-total">0</div><div class="stat-label">Séances totales</div></div>
+            <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-value" id="stat-level">Débutant</div><div class="stat-label">Niveau actuel</div></div>
+        </div>
+        <div class="today-preview" id="today-preview">
+            <h2 class="section-title">Programme du jour</h2>
+            <div class="exercise-preview-list" id="exercise-preview-list"></div>
+        </div>
+        <div class="motivation-banner" id="motivation-home"></div>
+        <div class="action-buttons">
+            <button class="btn-primary btn-large" id="btn-start" onclick="startWorkout()"><span class="btn-icon">▶️</span>Commencer l'entraînement</button>
+            <button class="btn-secondary" onclick="showScreen('history')"><span class="btn-icon">📜</span>Historique</button>
+            <button class="btn-secondary" onclick="showScreen('settings')"><span class="btn-icon">⚙️</span>Paramètres</button>
+        </div>
+    </div>
+
+    <div id="warmup-screen" class="phase-screen">
+        <div class="phase-header">
+            <button class="btn-back" onclick="showScreen('home')">✕</button>
+            <span class="phase-badge">ÉCHAUFFEMENT</span>
+            <span class="phase-progress" id="warmup-progress">1/5</span>
+        </div>
+        <div class="phase-main">
+            <div class="phase-icon-large" id="warmup-icon">🔄</div>
+            <h2 class="phase-exercise-name" id="warmup-name">Rotation des épaules</h2>
+            <div class="timer-display"><div class="timer-circle"><span class="timer-value" id="warmup-timer">0:30</span></div></div>
+            <div class="phase-actions">
+                <button class="btn-primary" id="warmup-start-btn" onclick="toggleWarmupTimer()">▶️ Démarrer</button>
+                <button class="btn-next" onclick="nextWarmup()">Suivant →</button>
+            </div>
+        </div>
+        <div class="skip-phase"><button class="btn-text" onclick="skipToWorkout()">Passer l'échauffement</button></div>
+    </div>
+
+    <div id="workout-screen" class="phase-screen">
+        <div class="phase-header">
+            <button class="btn-back" onclick="showScreen('home')">✕</button>
+            <span class="phase-badge" id="workout-progress">EXERCICE 1/4</span>
+            <button class="btn-tip" onclick="toggleTip()">💡</button>
+        </div>
+        <div class="tip-panel" id="tip-panel"><h4>📝 Conseil de posture</h4><p id="tip-text"></p></div>
+        <div class="phase-main">
+            <div class="exercise-icon-large" id="workout-icon">💪</div>
+            <h2 class="exercise-name-large" id="workout-name">Pompes classiques</h2>
+            <div class="reps-display">
+                <span class="reps-value" id="workout-reps">10</span>
+                <span class="reps-unit" id="workout-unit">répétitions</span>
+            </div>
+            <div class="series-grid" id="series-grid">
+                <button class="series-btn" onclick="completeSeries(1)"><span class="series-number">Série 1</span><span class="series-reps" id="series-1-reps">10x</span></button>
+                <button class="series-btn" onclick="completeSeries(2)"><span class="series-number">Série 2</span><span class="series-reps" id="series-2-reps">10x</span></button>
+                <button class="series-btn" onclick="completeSeries(3)"><span class="series-number">Série 3</span><span class="series-reps" id="series-3-reps">10x</span></button>
+            </div>
+            <div class="motivation-mini" id="motivation-workout"></div>
+        </div>
+        <div class="workout-footer">
+            <button class="btn-primary btn-large hidden" id="btn-next-exercise" onclick="nextExercise()">Exercice suivant →</button>
+            <div class="difficulty-adjust">
+                <span>Ajuster :</span>
+                <button class="btn-adjust" onclick="adjustDifficulty('easier')">Trop dur 😓</button>
+                <button class="btn-adjust" onclick="adjustDifficulty('harder')">Trop facile 💪</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="rest-overlay" id="rest-overlay">
+        <div class="rest-content">
+            <h3>⏱️ Repos</h3>
+            <div class="rest-timer" id="rest-timer">1:00</div>
+            <button class="btn-skip-rest" onclick="skipRest()">Passer le repos</button>
+        </div>
+    </div>
+
+    <div id="stretch-screen" class="phase-screen">
+        <div class="phase-header">
+            <button class="btn-back" onclick="showScreen('home')">✕</button>
+            <span class="phase-badge">ÉTIREMENTS</span>
+            <span class="phase-progress" id="stretch-progress">1/6</span>
+        </div>
+        <div class="phase-main">
+            <div class="phase-icon-large" id="stretch-icon">🚪</div>
+            <h2 class="phase-exercise-name" id="stretch-name">Étirement pectoraux</h2>
+            <div class="timer-display"><div class="timer-circle stretch"><span class="timer-value" id="stretch-timer">0:30</span></div></div>
+            <div class="phase-actions">
+                <button class="btn-primary" id="stretch-start-btn" onclick="toggleStretchTimer()">▶️ Démarrer</button>
+                <button class="btn-next" onclick="nextStretch()">Suivant →</button>
+            </div>
+        </div>
+        <div class="skip-phase"><button class="btn-text" onclick="completeWorkout()">Passer les étirements</button></div>
+    </div>
+
+    <div id="complete-screen" class="phase-screen complete-phase">
+        <div class="confetti">🎉</div>
+        <div class="complete-content">
+            <div class="trophy">🏆</div>
+            <h1 class="complete-title">Bravo !</h1>
+            <p class="complete-subtitle">Séance terminée avec succès</p>
+            <div class="complete-stats">
+                <div class="complete-stat"><span class="complete-stat-value" id="complete-exercises">4</span><span class="complete-stat-label">Exercices</span></div>
+                <div class="complete-stat"><span class="complete-stat-value" id="complete-series">12</span><span class="complete-stat-label">Séries</span></div>
+                <div class="complete-stat"><span class="complete-stat-value" id="complete-streak">1</span><span class="complete-stat-label">Jours 🔥</span></div>
+            </div>
+            <div class="motivation-banner complete" id="motivation-complete"></div>
+            <button class="btn-primary btn-large" onclick="goHome()">Retour à l'accueil</button>
+        </div>
+    </div>
+
+    <div id="history-screen" class="screen">
+        <div class="screen-header"><button class="btn-back" onclick="showScreen('home')">←</button><h1>Historique</h1></div>
+        <div id="history-content"></div>
+    </div>
+
+    <div id="settings-screen" class="screen">
+        <div class="screen-header"><button class="btn-back" onclick="showScreen('home')">←</button><h1>Paramètres</h1></div>
+        <div class="settings-section">
+            <h2>Niveau de difficulté</h2>
+            <div class="level-buttons">
+                <button class="level-btn" id="level-beginner" onclick="changeLevel('beginner')">🌱 Débutant<span class="level-desc">3-4 séances/semaine</span></button>
+                <button class="level-btn" id="level-intermediate" onclick="changeLevel('intermediate')">💪 Intermédiaire<span class="level-desc">5-6 séances/semaine</span></button>
+            </div>
+        </div>
+        <div class="settings-section">
+            <h2>Progression actuelle</h2>
+            <div class="progress-info">
+                <div class="progress-item"><span>Semaine</span><div class="progress-adjust"><button onclick="adjustWeek(-1)">-</button><span id="settings-week">1</span><button onclick="adjustWeek(1)">+</button></div></div>
+                <div class="progress-item"><span>Jour</span><div class="progress-adjust"><button onclick="adjustDay(-1)">-</button><span id="settings-day">1</span><button onclick="adjustDay(1)">+</button></div></div>
+            </div>
+        </div>
+        <div class="settings-section danger">
+            <h2>Zone danger</h2>
+            <button class="btn-danger" onclick="resetProgress()">🗑️ Réinitialiser toute la progression</button>
+        </div>
+    </div>
+
+    <script>
+        const EXERCISES = {
+            pompes_classiques: { name: "Pompes classiques", icon: "💪", baseReps: 5, increment: 2, maxReps: 50, restTime: 60, tips: "Gardez le corps aligné, descendez jusqu'à ce que votre poitrine frôle le sol. Coudes à 45° du corps." },
+            pompes_inclinees: { name: "Pompes inclinées (mains sur banc)", icon: "📐", baseReps: 8, increment: 2, maxReps: 40, restTime: 45, tips: "Plus facile que les pompes classiques. Idéal pour les débutants. Gardez le dos droit." },
+            pompes_declinees: { name: "Pompes déclinées (pieds sur banc)", icon: "🔻", baseReps: 3, increment: 1, maxReps: 30, restTime: 75, tips: "Plus difficile, cible le haut des pectoraux. Descendez lentement." },
+            dips_chaise: { name: "Dips sur chaise", icon: "🪑", baseReps: 6, increment: 2, maxReps: 35, restTime: 60, tips: "Gardez les coudes serrés, descendez à 90°. Dos proche de la chaise." },
+            squats: { name: "Squats", icon: "🦵", baseReps: 10, increment: 3, maxReps: 60, restTime: 45, tips: "Pieds largeur d'épaules, poussez les fesses en arrière. Genoux dans l'axe des pieds." },
+            fentes: { name: "Fentes alternées", icon: "🚶", baseReps: 8, increment: 2, maxReps: 40, restTime: 45, tips: "Grand pas en avant, genou arrière frôle le sol. Gardez le buste droit." },
+            abdos_crunchs: { name: "Crunchs", icon: "🔥", baseReps: 10, increment: 3, maxReps: 50, restTime: 30, tips: "Ne tirez pas sur la nuque, regardez le plafond. Contractez les abdos à la montée." },
+            abdos_banc: { name: "Relevés de jambes (banc)", icon: "🛋️", baseReps: 8, increment: 2, maxReps: 30, restTime: 45, tips: "Allongé sur le banc, montez les jambes tendues. Contrôlez la descente." },
+            gainage: { name: "Gainage (secondes)", icon: "⏱️", baseReps: 20, increment: 5, maxReps: 180, restTime: 30, tips: "Corps aligné comme une planche. Ne creusez pas le dos, serrez les fessiers.", isTime: true },
+            gainage_lateral: { name: "Gainage latéral (chaque côté)", icon: "↔️", baseReps: 15, increment: 5, maxReps: 90, restTime: 30, tips: "Hanches hautes, corps aligné. Alternez les côtés.", isTime: true }
+        };
+
+        const WARMUP = [
+            { name: "Rotation des épaules", duration: 30, icon: "🔄" },
+            { name: "Rotation du bassin", duration: 30, icon: "💫" },
+            { name: "Montées de genoux", duration: 45, icon: "🦵" },
+            { name: "Jumping jacks légers", duration: 45, icon: "⭐" },
+            { name: "Rotation des poignets", duration: 20, icon: "✋" }
+        ];
+
+        const STRETCHES = [
+            { name: "Étirement pectoraux", duration: 30, icon: "🚪" },
+            { name: "Étirement quadriceps", duration: 30, icon: "🦵" },
+            { name: "Étirement ischio-jambiers", duration: 30, icon: "🧘" },
+            { name: "Chat-vache (dos)", duration: 45, icon: "🐱" },
+            { name: "Étirement triceps", duration: 20, icon: "💪" },
+            { name: "Respiration profonde", duration: 30, icon: "🌬️" }
+        ];
+
+        const MOTIVATION = [
+            "💪 Chaque répétition te rapproche de ton objectif !",
+            "🔥 La douleur est temporaire, la fierté est éternelle !",
+            "⚡ Tu es plus fort que tu ne le crois !",
+            "🎯 Un jour à la fois, un pas après l'autre !",
+            "🏆 Les champions s'entraînent quand les autres abandonnent !",
+            "✨ Ton futur toi te remerciera !",
+            "🚀 Impossible n'est pas dans ton vocabulaire !",
+            "💎 La constance bat le talent !",
+            "🌟 Chaque séance est une victoire !",
+            "⭐ Tu es sur la voie de la transformation !"
+        ];
+
+        const PROGRAMS = {
+            beginner: { 1: ["pompes_inclinees", "squats", "gainage"], 2: null, 3: ["dips_chaise", "fentes", "abdos_crunchs"], 4: null, 5: ["pompes_classiques", "squats", "gainage_lateral"], 6: ["abdos_banc", "fentes", "gainage"], 7: null },
+            intermediate: { 1: ["pompes_classiques", "pompes_declinees", "squats", "gainage"], 2: ["dips_chaise", "fentes", "abdos_crunchs", "gainage_lateral"], 3: null, 4: ["pompes_inclinees", "pompes_classiques", "squats", "abdos_banc"], 5: ["dips_chaise", "fentes", "gainage", "abdos_crunchs"], 6: ["pompes_declinees", "squats", "gainage_lateral", "abdos_banc"], 7: null }
+        };
+
+        let progress = { currentDay: 1, currentWeek: 1, level: 'beginner', exerciseProgress: {}, history: [], totalWorkouts: 0, streak: 0, lastWorkoutDate: null };
+        let workout = { currentExerciseIndex: 0, completedSeries: {}, startTime: null };
+        let warmupIndex = 0, warmupTimer = 0, warmupInterval = null, warmupRunning = false;
+        let stretchIndex = 0, stretchTimer = 0, stretchInterval = null, stretchRunning = false;
+        let restTimer = 0, restInterval = null;
+
+        function init() { loadProgress(); updateHomeScreen(); updateMotivation(); }
+        function loadProgress() { const s = localStorage.getItem('muscuProgress'); if (s) progress = JSON.parse(s); }
+        function saveProgress() { localStorage.setItem('muscuProgress', JSON.stringify(progress)); }
+
+        function showScreen(id) {
+            document.querySelectorAll('.screen, .phase-screen').forEach(s => s.classList.remove('active', 'flex-active'));
+            const el = document.getElementById(id + '-screen');
+            el.classList.add(el.classList.contains('phase-screen') ? 'flex-active' : 'active');
+            if (id === 'home') updateHomeScreen();
+            else if (id === 'history') updateHistoryScreen();
+            else if (id === 'settings') updateSettingsScreen();
+        }
+
+        function getTodayProgram() { return PROGRAMS[progress.level][progress.currentDay]; }
+
+        function calculateReps(id) {
+            const ex = EXERCISES[id];
+            const bonus = (progress.currentDay - 1) * ex.increment + (progress.currentWeek - 1) * ex.increment * 2 + (progress.exerciseProgress[id] || 0);
+            return Math.min(ex.baseReps + bonus, ex.maxReps);
+        }
+
+        function updateHomeScreen() {
+            const today = getTodayProgram();
+            const isRest = today === null;
+            document.getElementById('current-day').textContent = progress.currentDay;
+            document.getElementById('current-week').textContent = progress.currentWeek;
+            document.getElementById('stat-streak').textContent = progress.streak;
+            document.getElementById('stat-total').textContent = progress.totalWorkouts;
+            document.getElementById('stat-level').textContent = progress.level === 'beginner' ? 'Débutant' : 'Intermédiaire';
+            document.getElementById('hero-subtitle').textContent = isRest ? "🧘 Jour de repos - Récupérez bien !" : today.length + " exercices aujourd'hui";
+            document.getElementById('today-preview').classList.toggle('hidden', isRest);
+            document.getElementById('btn-start').classList.toggle('hidden', isRest);
+            if (!isRest) {
+                document.getElementById('exercise-preview-list').innerHTML = today.map(id => {
+                    const ex = EXERCISES[id], reps = calculateReps(id);
+                    return '<div class="exercise-preview-item"><div class="exercise-preview-icon">' + ex.icon + '</div><div class="exercise-preview-info"><div class="exercise-preview-name">' + ex.name + '</div><div class="exercise-preview-reps">3 × ' + reps + (ex.isTime ? ' sec' : ' reps') + '</div></div></div>';
+                }).join('');
+            }
+        }
+
+        function updateMotivation() {
+            const m = MOTIVATION[Math.floor(Math.random() * MOTIVATION.length)];
+            ['motivation-home', 'motivation-workout', 'motivation-complete'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = m; });
+        }
+
+        function startWorkout() { workout = { currentExerciseIndex: 0, completedSeries: {}, startTime: Date.now() }; warmupIndex = 0; updateWarmupScreen(); showScreen('warmup'); }
+
+        function updateWarmupScreen() {
+            const c = WARMUP[warmupIndex];
+            document.getElementById('warmup-icon').textContent = c.icon;
+            document.getElementById('warmup-name').textContent = c.name;
+            document.getElementById('warmup-progress').textContent = (warmupIndex + 1) + '/' + WARMUP.length;
+            warmupTimer = c.duration;
+            document.getElementById('warmup-timer').textContent = formatTime(warmupTimer);
+            document.getElementById('warmup-start-btn').innerHTML = '▶️ Démarrer';
+            warmupRunning = false;
+        }
+
+        function toggleWarmupTimer() {
+            if (warmupRunning) { clearInterval(warmupInterval); warmupRunning = false; document.getElementById('warmup-start-btn').innerHTML = '▶️ Reprendre'; }
+            else { warmupRunning = true; document.getElementById('warmup-start-btn').innerHTML = '⏸️ Pause'; warmupInterval = setInterval(() => { warmupTimer--; document.getElementById('warmup-timer').textContent = formatTime(warmupTimer); if (warmupTimer <= 0) { clearInterval(warmupInterval); warmupRunning = false; } }, 1000); }
+        }
+
+        function nextWarmup() { clearInterval(warmupInterval); warmupRunning = false; if (warmupIndex < WARMUP.length - 1) { warmupIndex++; updateWarmupScreen(); } else skipToWorkout(); }
+        function skipToWorkout() { clearInterval(warmupInterval); workout.currentExerciseIndex = 0; updateWorkoutScreen(); showScreen('workout'); }
+
+        function updateWorkoutScreen() {
+            const today = getTodayProgram(), id = today[workout.currentExerciseIndex], ex = EXERCISES[id], reps = calculateReps(id);
+            document.getElementById('workout-progress').textContent = 'EXERCICE ' + (workout.currentExerciseIndex + 1) + '/' + today.length;
+            document.getElementById('workout-icon').textContent = ex.icon;
+            document.getElementById('workout-name').textContent = ex.name;
+            document.getElementById('workout-reps').textContent = reps;
+            document.getElementById('workout-unit').textContent = ex.isTime ? 'secondes' : 'répétitions';
+            document.getElementById('tip-text').textContent = ex.tips;
+            const completed = workout.completedSeries[id] || [];
+            document.querySelectorAll('.series-btn').forEach((btn, i) => {
+                const n = i + 1, repsSpan = btn.querySelector('.series-reps');
+                repsSpan.textContent = completed.includes(n) ? '✓' : (ex.isTime ? reps + 's' : reps + 'x');
+                btn.classList.toggle('completed', completed.includes(n));
+            });
+            const btnNext = document.getElementById('btn-next-exercise');
+            btnNext.classList.toggle('hidden', completed.length !== 3);
+            btnNext.textContent = workout.currentExerciseIndex >= today.length - 1 ? 'Passer aux étirements →' : 'Exercice suivant →';
+            document.getElementById('tip-panel').classList.remove('visible');
+        }
+
+        function toggleTip() { document.getElementById('tip-panel').classList.toggle('visible'); }
+
+        function completeSeries(n) {
+            const today = getTodayProgram(), id = today[workout.currentExerciseIndex], ex = EXERCISES[id];
+            if (!workout.completedSeries[id]) workout.completedSeries[id] = [];
+            if (!workout.completedSeries[id].includes(n)) {
+                workout.completedSeries[id].push(n);
+                document.querySelectorAll('.series-btn')[n - 1].classList.add('completed');
+                document.querySelectorAll('.series-btn')[n - 1].querySelector('.series-reps').textContent = '✓';
+                if (n < 3) startRest(ex.restTime);
+                updateMotivation();
+                if (workout.completedSeries[id].length === 3) {
+                    const btnNext = document.getElementById('btn-next-exercise');
+                    btnNext.classList.remove('hidden');
+                    btnNext.textContent = workout.currentExerciseIndex >= today.length - 1 ? 'Passer aux étirements →' : 'Exercice suivant →';
+                }
+            }
+        }
+
+        function startRest(d) {
+            restTimer = d;
+            document.getElementById('rest-timer').textContent = formatTime(restTimer);
+            document.getElementById('rest-overlay').classList.add('visible');
+            restInterval = setInterval(() => { restTimer--; document.getElementById('rest-timer').textContent = formatTime(restTimer); if (restTimer <= 0) skipRest(); }, 1000);
+        }
+
+        function skipRest() { clearInterval(restInterval); document.getElementById('rest-overlay').classList.remove('visible'); }
+
+        function nextExercise() {
+            const today = getTodayProgram();
+            if (workout.currentExerciseIndex < today.length - 1) { workout.currentExerciseIndex++; updateWorkoutScreen(); }
+            else { stretchIndex = 0; updateStretchScreen(); showScreen('stretch'); }
+        }
+
+        function adjustDifficulty(adj) {
+            getTodayProgram().forEach(id => {
+                if (!progress.exerciseProgress[id]) progress.exerciseProgress[id] = 0;
+                progress.exerciseProgress[id] += (adj === 'easier' ? -1 : 1) * EXERCISES[id].increment;
+            });
+            saveProgress(); updateWorkoutScreen();
+        }
+
+        function updateStretchScreen() {
+            const c = STRETCHES[stretchIndex];
+            document.getElementById('stretch-icon').textContent = c.icon;
+            document.getElementById('stretch-name').textContent = c.name;
+            document.getElementById('stretch-progress').textContent = (stretchIndex + 1) + '/' + STRETCHES.length;
+            stretchTimer = c.duration;
+            document.getElementById('stretch-timer').textContent = formatTime(stretchTimer);
+            document.getElementById('stretch-start-btn').innerHTML = '▶️ Démarrer';
+            stretchRunning = false;
+        }
+
+        function toggleStretchTimer() {
+            if (stretchRunning) { clearInterval(stretchInterval); stretchRunning = false; document.getElementById('stretch-start-btn').innerHTML = '▶️ Reprendre'; }
+            else { stretchRunning = true; document.getElementById('stretch-start-btn').innerHTML = '⏸️ Pause'; stretchInterval = setInterval(() => { stretchTimer--; document.getElementById('stretch-timer').textContent = formatTime(stretchTimer); if (stretchTimer <= 0) { clearInterval(stretchInterval); stretchRunning = false; } }, 1000); }
+        }
+
+        function nextStretch() { clearInterval(stretchInterval); stretchRunning = false; if (stretchIndex < STRETCHES.length - 1) { stretchIndex++; updateStretchScreen(); } else completeWorkout(); }
+
+        function completeWorkout() {
+            clearInterval(stretchInterval);
+            const today = getTodayProgram(), duration = Math.round((Date.now() - workout.startTime) / 60000);
+            const exercises = today.map(id => ({ id, name: EXERCISES[id].name, reps: calculateReps(id), series: 3 }));
+            const todayStr = new Date().toDateString(), yesterday = new Date(Date.now() - 86400000).toDateString();
+            let newStreak = progress.lastWorkoutDate === todayStr ? progress.streak : (progress.lastWorkoutDate === yesterday ? progress.streak + 1 : 1);
+            progress.currentDay = progress.currentDay >= 7 ? 1 : progress.currentDay + 1;
+            if (progress.currentDay === 1) progress.currentWeek++;
+            progress.totalWorkouts++; progress.streak = newStreak; progress.lastWorkoutDate = todayStr;
+            progress.history.unshift({ date: new Date().toISOString(), day: progress.currentDay, week: progress.currentWeek, duration, exercises, level: progress.level });
+            progress.history = progress.history.slice(0, 100);
+            saveProgress();
+            document.getElementById('complete-exercises').textContent = today.length;
+            document.getElementById('complete-series').textContent = today.length * 3;
+            document.getElementById('complete-streak').textContent = progress.streak;
+            updateMotivation();
+            showScreen('complete');
+        }
+
+        function goHome() { showScreen('home'); }
+
+        function updateHistoryScreen() {
+            const c = document.getElementById('history-content');
+            if (progress.history.length === 0) { c.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div><p>Aucune séance enregistrée</p><p class="empty-subtitle">Commencez votre première séance !</p></div>'; return; }
+            c.innerHTML = '<div class="history-list">' + progress.history.map(s => '<div class="history-card"><div class="history-date">' + new Date(s.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }) + '</div><div class="history-details"><span>Semaine ' + s.week + ' • Jour ' + s.day + '</span><span>' + s.duration + ' min</span></div><div class="history-exercises">' + s.exercises.map(e => '<span class="history-exercise-tag">' + (EXERCISES[e.id]?.icon || '💪') + ' ' + e.reps + '×3</span>').join('') + '</div></div>').join('') + '</div>';
+        }
+
+        function updateSettingsScreen() {
+            document.getElementById('settings-week').textContent = progress.currentWeek;
+            document.getElementById('settings-day').textContent = progress.currentDay;
+            document.getElementById('level-beginner').classList.toggle('active', progress.level === 'beginner');
+            document.getElementById('level-intermediate').classList.toggle('active', progress.level === 'intermediate');
+        }
+
+        function changeLevel(l) { progress.level = l; saveProgress(); updateSettingsScreen(); updateHomeScreen(); }
+        function adjustWeek(d) { progress.currentWeek = Math.max(1, progress.currentWeek + d); saveProgress(); updateSettingsScreen(); }
+        function adjustDay(d) { let n = progress.currentDay + d; if (n < 1) n = 7; if (n > 7) n = 1; progress.currentDay = n; saveProgress(); updateSettingsScreen(); }
+        function resetProgress() { if (confirm('Êtes-vous sûr de vouloir réinitialiser toute votre progression ?')) { progress = { currentDay: 1, currentWeek: 1, level: 'beginner', exerciseProgress: {}, history: [], totalWorkouts: 0, streak: 0, lastWorkoutDate: null }; saveProgress(); showScreen('home'); } }
+        function formatTime(s) { return Math.floor(s / 60) + ':' + (s % 60).toString().padStart(2, '0'); }
+
+        init();
+    </script>
+</body>
+</html>
